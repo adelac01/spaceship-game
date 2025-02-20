@@ -24,6 +24,7 @@ public class CollisionScript : MonoBehaviour
     [SerializeField] float levelLoadDelay = 3f;
     [SerializeField] float respawnDelay = 2f;
 
+    // Called at the beginning of each scene thats been loaded
     private void Start() {
 
         GameObject checkpoint;
@@ -38,7 +39,7 @@ public class CollisionScript : MonoBehaviour
         }
 
         spotlight = GameObject.Find("Spot Light");
-        if(spotlight == null){
+        if(spotlight == null) {
             avaliableFlashlight = false;
         } else {
             avaliableFlashlight = true;
@@ -52,7 +53,7 @@ public class CollisionScript : MonoBehaviour
         Debug.Log($"Collision:{collision.gameObject.tag}");
 
         // A check if respawning is occuring such that the event happens only once
-        if(isRespawning || isTransitioning ) return;
+        if(isRespawning || isTransitioning) return;
 
         // What to do based on different collision cases
         switch(collision.gameObject.tag){
@@ -78,7 +79,7 @@ public class CollisionScript : MonoBehaviour
     // Load the next level after beating it
     private IEnumerator sceneLoad() {
 
-        sceneIndex = SceneManager.GetActiveScene().buildIndex+1;
+        sceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
         isTransitioning = true;
         Debug.Log(sceneIndex);
 
@@ -96,6 +97,7 @@ public class CollisionScript : MonoBehaviour
         SceneManager.LoadScene(sceneIndex);
     }  
 
+    // Deactivate visual elements of the rocket, then activate again once respawned
     private IEnumerator respawn() {
         foreach(Renderer r in GetComponentsInChildren<Renderer>()) {
             r.enabled = false;
@@ -123,7 +125,7 @@ public class CollisionScript : MonoBehaviour
         isRespawning = false;
     }
 
-    private void setSpawn(){
+    private void setSpawn() {
         xSpawn = checkpointPlatform.x;
         ySpawn = checkpointPlatform.y + 0.826f;
     }
